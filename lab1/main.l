@@ -1,7 +1,7 @@
 %option noyywrap
 
 %{
-#include <stdio.h>
+#include <stdbool.h>
 
 void printToken(char* str, char* className) {
     printf("<%s, %s>\n", className, str);
@@ -15,13 +15,15 @@ BOR [|]
 BAND [&]
 IDENTIFIER [[:alpha:]_][[:alnum:]_]*
 ASSIGN [=]
-ILIT 0[xX][0-9a-fA-F]+
+ILIT 0[x]([0-9aA-fF]+)
+ERROR .|[0-9]+|0[x]([0-9aA-zZ]+)|[0-9][aA-zZ]+
 
 
 %%
 {WHITESPACES} {};
 {LPARENT} { printToken(yytext, "LPARENT");}
 {RPARENT} { printToken(yytext, "RPARENT");}
+{COMMA} { printToken(yytext, "COMMA");}
 {BOR} { printToken(yytext, "BOR");}
 {BAND} { printToken(yytext, "BAND");}
 {IDENTIFIER} { printToken(yytext, "IDENTIFIER");}
@@ -33,6 +35,16 @@ ILIT 0[xX][0-9a-fA-F]+
 
 int main()
 {
-    yylex();
+    bool is_testing = true;
+    
+    if(is_testing) {
+        FILE* test_file = fopen("test.txt", "r");
+        yyrestart(test_file);
+        yylex();
+    } else {
+        yylex();
+    }
+    
+
     return 0;
 }
