@@ -35,7 +35,7 @@ ERROR .|[0-9]+|0[x]([0-9aA-zZ]+)|[0-9][aA-zZ]+
 
 int main()
 {
-    bool is_testing = true;
+    bool is_testing = false;
     
     if(is_testing) {
         FILE* test_file = fopen("test.txt", "r");
