@@ -1,11 +1,10 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+extern int yylineno;
 int yylex(void);
+int yyrestart(FILE*);
 void yyerror(char const * msg);
-int line_count = 0; 
-
-
 %}
 
 %token TOK_LPARENT TOK_RPARENT TOK_COMMA TOK_BOR TOK_BAND TOK_IDENTIFIER TOK_ASSIGN TOK_BNOT TOK_ILIT TOK_ERROR;
@@ -14,12 +13,11 @@ int line_count = 0;
 %%
 input
 : %empty
-| input line {line_count++;}
+| input line
 ;
 
 line
-: '\n'
-| exp
+: exp
 | exp '\n'
 ;
 
@@ -43,7 +41,7 @@ operation
 
 
 void yyerror(char const * msg){
-    printf("In line %d: %s\n", line_count, msg);
+    printf("In line %d: %s\n", yylineno, msg);
     exit(1);
 }
 

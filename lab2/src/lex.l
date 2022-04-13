@@ -1,5 +1,4 @@
-%option noyywrap
-
+%option noyywrap yylineno
 %{
 #include "../includes/grammar.h"
 %}
@@ -18,6 +17,7 @@ ERROR .|[0-9]+|0[x]([0-9aA-zZ]+)|[0-9][aA-zZ]+
 
 
 %%
+\n {}
 {WHITESPACES} {};
 {LPARENT} {return TOK_LPARENT;}
 {RPARENT} {return TOK_RPARENT;}
