@@ -1,16 +1,10 @@
 all:
-	mkdir bin
-	mkdir includes
-	mkdir build
+	mkdir -p bin
+	mkdir -p includes
+	mkdir -p gen
 
+	bison src/grammar.y --defines=includes/grammar.h -o gen/grammar.c
+	flex -o gen/lex.c src/lex.l
+
+	gcc gen/grammar.c gen/lex.c -o bin/parser
 	
-	bison src/grammar.y --defines=grammar.h -o grammar.c
-	mv grammar.h includes
-	flex src/lex.l
-
-	mv lex.yy.c build
-	mv grammar.c build
-	
-
-	gcc build/grammar.c build/lex.yy.c -o parser
-	mv parser bin
